@@ -6,24 +6,24 @@ const app = express();
 app.set('port', process.env.PORT || 3000);
 
 // Static Files
-app.use( express.static( path.join( __dirname, 'public' ) ) );
+app.use(express.static(path.join(__dirname, 'public')));
 
-const server = app.listen( app.get('port'), () => {
-    console.log( `Server on port ${ app.get('port') }` );
+const server = app.listen(app.get('port'), () => {
+    console.log(`Server on port ${ app.get('port') }`);
 });
 
 // WebSocket
 const SoketIO = require('socket.io');
-const io = SoketIO( server );
+const io = SoketIO(server);
 
-io.on('connection', ( socket ) => {
-    
-    socket.on('chat:connect', ( data ) => {
-        console.log( `New connection ${data.id}` );
+io.on('connection', (socket) => {
+
+    socket.on('chat:connect', (data) => {
+        console.log(`New connection ${data.id}`);
         socket.broadcast.emit('chat:connect', data);
     });
 
-    socket.on('chat:typing', ( data ) => {
+    socket.on('chat:typing', (data) => {
         console.log(data);
         socket.broadcast.emit('chat:typing', data);
     });
@@ -33,9 +33,13 @@ io.on('connection', ( socket ) => {
         socket.broadcast.emit('chat:stopTyping');
     });
 
-    socket.on('chat:message', ( data ) => {
-        console.log( data );
+    socket.on('chat:message', (data) => {
+        console.log(data);
         io.sockets.emit('chat:message', data);
         socket.broadcast.emit('chat:newMessage');
     });
+
+    socket.on('chat:disconnect', (data) => {
+        socket.broadcast.emit('chat:disconnect', data);
+    })
 });

@@ -11,7 +11,7 @@ const saveName = document.getElementById('save-name');
 let userDataContainer = document.getElementById('user-data-container');
 let chatContainer = document.getElementById('chat-container');
 
-const rename = document.getElementById('rename');
+const exit = document.getElementById('exit');
 let actions = document.getElementById('actions');
 
 let messageContainer = document.getElementById('message-container');
@@ -35,7 +35,11 @@ saveName.onclick = () => {
         connect = true;
     }
 }
-rename.onclick = () => {
+exit.onclick = () => {
+    connect = false;
+    socket.emit('chat:disconnect', {
+        name: name.value
+    });
     userDataContainer.classList.remove('d-none');
     chatContainer.classList.add('d-none');
 }
@@ -63,11 +67,16 @@ FormSendMessage.onsubmit = (e) => {
 }
 
 // Listening
+
 socket.on('chat:connect', (data) => {
     if (connect) {
-        notify.innerHTML = notifySuccess(data.name);
+        notify.appendChild(notifySuccess(data.name));
+        setTimeout(() => {
+            let showNotify = document.getElementById('notify-success');
+            notify.removeChild(showNotify);
+        }, 4000);
     }
-})
+});
 
 socket.on('chat:message', (data) => {
     if (data.id == socket.id) {
@@ -101,12 +110,22 @@ socket.on('chat:newMessage', () => {
         console.log(sound);
         document.body.removeChild(sound);
     }, 2000);
-})
+});
 
 socket.on('chat:typing', (data) => {
     actions.innerHTML = `<summary style="font-size: 0.8rem;" class="w-50 text"> ${data.name} esta escribiendo... </summary>`;
-})
+});
 
 socket.on('chat:stopTyping', () => {
     actions.innerHTML = ``;
-})
+});
+
+socket.on('chat:disconnect', (data) => {
+    if (connect) {
+        notify.appendChild(notifyDanger(data.name));
+        setTimeout(() => {
+            let showNotify = document.getElementById('notify-danger');
+            notify.removeChild(showNotify);
+        }, 4000);
+    }
+});
