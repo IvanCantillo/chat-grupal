@@ -1,0 +1,8 @@
+#message-container {
+    height: 15rem;
+    overflow-y: scroll;
+}
+
+.text:hover {
+    cursor: auto;
+}
