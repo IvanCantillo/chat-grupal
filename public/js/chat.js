@@ -37,7 +37,7 @@ rename.onclick = () => {
     userDataContainer.classList.remove('d-none');
     chatContainer.classList.add('d-none');
 }
-message.onkeypress = () => {
+message.onkeyup = () => {
     clearTimeout(timeout);
     socket.emit('chat:typing', {
         name: name.value
@@ -45,7 +45,7 @@ message.onkeypress = () => {
     timeout = setTimeout(() => {
         socket.emit('chat:stopTyping');
         clearTimeout(timeout);
-    }, 600);
+    }, 500);
 }
 FormSendMessage.onsubmit = ( e ) => {
     e.preventDefault();
