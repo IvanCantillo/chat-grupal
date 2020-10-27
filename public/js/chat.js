@@ -61,7 +61,7 @@ FormSendMessage.onsubmit = ( e ) => {
 }
 
 // Listening
-socket.on('chat:connect', (data) => {
+socket.on('chat:connect', ( data ) => {
     if (connect) {
         alertify.set('notifier', 'delay', 2.5);
         alertify.set('notifier', 'position', 'top-right');
@@ -69,7 +69,7 @@ socket.on('chat:connect', (data) => {
     }
 })
 
-socket.on('chat:message', (data) => {  
+socket.on('chat:message', ( data ) => {  
     if (data.id == socket.id) {
         messageContainer.innerHTML += `
             <div class="bg-primary w-50 ml-auto p-1 rounded text-white mb-1">
@@ -100,13 +100,13 @@ socket.on('chat:newMessage', () => {
         let sound = document.getElementById('sound');
         console.log( sound );
         document.body.removeChild( sound );
-    }, 1000);
+    }, 2000);
 })
 
-socket.on('chat:typing', (data) => {
+socket.on('chat:typing', ( data ) => {
     actions.innerHTML = `<summary style="font-size: 0.8rem;" class="w-50 text"> ${data.name} esta escribiendo... </summary>`;
 })
 
-socket.on('chat:stopTyping', (data) => {
+socket.on('chat:stopTyping', () => {
     actions.innerHTML = ``;
 })
