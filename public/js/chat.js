@@ -1,6 +1,8 @@
 const socket = io();
+
 let connect = false;
 let timeout
+let notify = document.getElementById('notify');
 
 let name = document.getElementById('name');
 let validations = document.getElementById('validations');
@@ -47,9 +49,9 @@ message.onkeyup = () => {
         clearTimeout(timeout);
     }, 500);
 }
-FormSendMessage.onsubmit = ( e ) => {
+FormSendMessage.onsubmit = (e) => {
     e.preventDefault();
-    if( !message.value.trim() ){
+    if (!message.value.trim()) {
         return
     }
     socket.emit('chat:message', {
@@ -61,15 +63,13 @@ FormSendMessage.onsubmit = ( e ) => {
 }
 
 // Listening
-socket.on('chat:connect', ( data ) => {
+socket.on('chat:connect', (data) => {
     if (connect) {
-        alertify.set('notifier', 'delay', 2.5);
-        alertify.set('notifier', 'position', 'top-right');
-        alertify.notify(`${data.name} se ha conectado!`, 'success', 5, function () { console.log('dismissed'); });
+        notify.innerHTML = notifySuccess(data.name);
     }
 })
 
-socket.on('chat:message', ( data ) => {  
+socket.on('chat:message', (data) => {
     if (data.id == socket.id) {
         messageContainer.innerHTML += `
             <div class="bg-primary w-50 ml-auto p-1 rounded text-white mb-1">
@@ -98,12 +98,12 @@ socket.on('chat:newMessage', () => {
     document.body.appendChild(sound);
     setTimeout(() => {
         let sound = document.getElementById('sound');
-        console.log( sound );
-        document.body.removeChild( sound );
+        console.log(sound);
+        document.body.removeChild(sound);
     }, 2000);
 })
 
-socket.on('chat:typing', ( data ) => {
+socket.on('chat:typing', (data) => {
     actions.innerHTML = `<summary style="font-size: 0.8rem;" class="w-50 text"> ${data.name} esta escribiendo... </summary>`;
 })
 

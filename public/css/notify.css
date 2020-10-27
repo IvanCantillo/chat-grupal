@@ -1,0 +1,30 @@
+#notify {
+    height: 2.1rem;
+}
+
+.notify-show {
+    z-index: 100;
+    visibility: hidden;
+    right: -5rem;
+    opacity: 0;
+    animation-name: notify-show;
+    animation-duration: 3.5s;
+}
+
+@keyframes notify-show {
+    0% {
+        right: -5rem;
+        opacity: 0;
+        visibility: hidden;
+    }
+    50% {
+        right: 5rem;
+        opacity: 1;
+        visibility: visible;
+    }
+    100% {
+        right: -5rem;
+        opacity: 0;
+        visibility: hidden;
+    }
+}
