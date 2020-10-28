@@ -67,7 +67,6 @@ FormSendMessage.onsubmit = (e) => {
 }
 
 // Listening
-
 socket.on('chat:connect', (data) => {
     if (connect) {
         notify.appendChild(notifySuccess(data.name));

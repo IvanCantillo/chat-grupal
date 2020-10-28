@@ -26,3 +26,8 @@ const notifyWarning = (data) => {
     html.innerHTML = `¡<strong>${data}</strong> warning! 😱`;
     return html;
 }
+
+let notifyContainer = document.createElement("div");
+notifyContainer.setAttribute("id", "notify");
+
+document.body.prepend( notifyContainer );

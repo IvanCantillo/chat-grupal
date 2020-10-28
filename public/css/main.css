@@ -6,3 +6,41 @@
 .text:hover {
     cursor: auto;
 }
+
+.preview-img-container {
+    margin-top: 6.3rem; 
+    height: 7rem;
+    width: 10rem; 
+    position: absolute;
+}
+
+.preview-img {
+    background-size: 100% 100%;
+    background-image: url('https://wi.wallpapertip.com/wsimgs/7-78562_nature-wallpapers-for-desktop-background-full-screen-full.jpg');
+}
+
+.btn-close-preview-img {
+    margin: 5px;
+    padding: 0px 6.4px 1px 6.4px !important;
+    position: relative;
+    float: right;
+}
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;   
+    cursor: inherit;
+    display: block;
+}
