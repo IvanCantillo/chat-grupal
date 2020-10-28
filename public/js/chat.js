@@ -1,15 +1,93 @@
 // Funtions 
-function imgToBase64(input, preview) {
+function imgToBase64(input, preview, temp) {
     let fReader = new FileReader();
     fReader.readAsDataURL(input.files[0]);
-    fReader.onloadend = function(event) {
-        preview.style.backgroundImage = `url('${ event.target.result }')`;
+    fReader.onloadend = function (event) {
+        preview.style.backgroundImage = `url('${event.target.result}')`;
+        temp.value = event.target.result;
     }
 }
+const convertHours = ( hour ) => {
+    const hours = [
+        0,1,2,3,4,5,6,7,8,9,10,11,12,
+        1,2,3,4,5,6,7,8,9,10,11,12
+    ];
+
+    return hours[hour];
+}
+const msgStructure = ( name, message = null, img = null, hour, type, person ) => {
+
+    let container = document.createElement("div");
+
+    if( type == 1 ){
+        if( person == 1 ){
+            container.setAttribute("class", "bg-primary w-50 ml-auto p-1 rounded text-white mb-1");
+            container.innerHTML = `
+                <summary class="text-left" style="font-size: 0.75rem;"><strong> Yo </strong></summary>
+                    ${message}
+                <summary class="text-right text" style="font-size: 0.7rem;"> ${hour} </summary>
+            `;
+        }else {
+            container.setAttribute("class", "bg-secondary w-50 mr-auto p-1 rounded text-white mb-1");
+            container.innerHTML = `
+                <summary class="text-left" style="font-size: 0.75rem;"><strong> ${name} </strong></summary>
+                    ${message}
+                <summary class="text-right text" style="font-size: 0.7rem;"> ${hour} </summary>
+            `;
+        }
+    }else if( type == 2 ) {
+        if( person == 1 ){
+            container.setAttribute("class", "bg-primary w-50 ml-auto p-1 rounded text-white mb-1");
+            container.innerHTML = `
+                <summary class="text-left" style="font-size: 0.75rem;"><strong> Yo </strong></summary>
+                <div class="img-msg-container w-100 p-1">
+                    <img src="${img}" class="img-msg w-100 h-100 border rounded" />
+                </div>
+                <summary class="text-right text" style="font-size: 0.7rem;"> ${hour} </summary>
+            `;
+        }else {
+            container.setAttribute("class", "bg-secondary w-50 mr-auto p-1 rounded text-white mb-1");
+            container.innerHTML = `
+                <summary class="text-left" style="font-size: 0.75rem;"><strong> ${name} </strong></summary>
+                <div class="img-msg-container w-100 p-1">
+                    <img src="${img}" class="img-msg w-100 h-100 border rounded" />
+                </div>
+                <summary class="text-right text" style="font-size: 0.7rem;"> ${hour} </summary>
+            `;
+        }
+    }else {
+        if( person == 1 ){
+            container.setAttribute("class", "bg-primary w-50 ml-auto p-1 rounded text-white mb-1");
+            container.innerHTML = `
+                <summary class="text-left" style="font-size: 0.75rem;"><strong> Yo </strong></summary>
+                <div class="img-msg-container w-100 p-1">
+                    <img src="${img}" class="img-msg w-100 h-100 border rounded" />
+                </div>
+                ${message}
+                <summary class="text-right text" style="font-size: 0.7rem;"> ${hour} </summary>
+            `;
+        }else {
+            container.setAttribute("class", "bg-secondary w-50 mr-auto p-1 rounded text-white mb-1");
+            container.innerHTML = `
+                <summary class="text-left" style="font-size: 0.75rem;"><strong> ${name} </strong></summary>
+                <div class="img-msg-container w-100 p-1">
+                    <img src="${img}" class="img-msg w-100 h-100 border rounded" />
+                </div>
+                ${message}
+                <summary class="text-right text" style="font-size: 0.7rem;"> ${hour} </summary>
+            `;
+        }
+    }
+    
+    return container;
+}
+
+// Variables
 const socket = io();
 
 let connect = false;
-let timeout
+let timeout;
+let date = new Date();
 let notify = document.getElementById('notify');
 
 let name = document.getElementById('name');
@@ -24,8 +102,12 @@ let actions = document.getElementById('actions');
 
 let messageContainer = document.getElementById('message-container');
 const message = document.getElementById('message');
+
 let previewImg = document.getElementById('preview-img');
+let imgTemp = document.getElementById('img-temp');
+const btnClosePreviewImg = document.getElementById('btn-close-preview-img');
 const selectInput = document.getElementById('select-img');
+
 const FormSendMessage = document.getElementById('form-send-message');
 
 // Methods
@@ -67,33 +149,62 @@ message.onkeyup = () => {
 selectInput.onchange = () => {
     let validation = fileValidation(selectInput.value);
     if (validation.code == 'ok') {
+        imgToBase64(selectInput, previewImg, imgTemp);
         previewImg.classList.remove('d-none');
-        imgToBase64(selectInput, previewImg)
     } else {
         console.log(validation.message);
     }
 }
+btnClosePreviewImg.onclick = () => {
+    previewImg.classList.add('d-none');
+    previewImg.style.backgroundImage = '';
+    selectInput.value = '';
+}
+
 FormSendMessage.onsubmit = (e) => {
     e.preventDefault();
-    if (!message.value.trim()) {
+    if (!message.value.trim() && !selectInput.value.trim()) {
+        console.log('los 2 vacios');
         return
+    }else {
+        let hour = '';
+        if( date.getHours() >= 12 && date.getMinutes() > 0 ){
+            hour = `${ convertHours( date.getHours() ) }:${ date.getMinutes() } P.M`;
+        }else{
+            hour = `${ convertHours( date.getHours() ) }:${ date.getMinutes() } A.M`;
+        }
+        if (!selectInput.value) {
+            socket.emit('chat:message', {
+                name: name.value.trim(),
+                message: message.value.trim(),
+                hour: hour,
+                id: socket.id,
+                type: 1
+            });
+        } else if( !message.value.trim() ) {
+            socket.emit('chat:message', {
+                name: name.value.trim(),
+                img: imgTemp.value,
+                hour: hour,
+                id: socket.id,
+                type: 2
+            });
+            previewImg.classList.add('d-none');
+        }else {
+            socket.emit('chat:message', {
+                name: name.value.trim(),
+                message: message.value.trim(),
+                img: imgTemp.value,
+                hour: hour,
+                id: socket.id,
+                type: 3
+            });
+            previewImg.classList.add('d-none');
+        }
+        message.value = '';
+        imgTemp.value = '';
+        selectInput.value = '';
     }
-    if (!selectInput.value.trim()) {
-        socket.emit('chat:message', {
-            name: name.value.trim(),
-            message: message.value.trim(),
-            id: socket.id,
-            type: 'msg'
-        });
-    } else {
-        socket.emit('chat:message', {
-            name: name.value.trim(),
-            message: message.value.trim(),
-            id: socket.id,
-            type: 'img'
-        });
-    }
-    message.value = '';
 }
 
 // Listening
@@ -109,22 +220,11 @@ socket.on('chat:connect', (data) => {
 
 socket.on('chat:message', (data) => {
     if (data.id == socket.id) {
-        messageContainer.innerHTML += `
-            <div class="bg-primary w-50 ml-auto p-1 rounded text-white mb-1">
-                <summary class="text-left" style="font-size: 0.75rem;"><strong> Yo </strong></summary>
-                ${data.message}
-                <summary class="text-right text" style="font-size: 0.7rem;"> 12:50 P.M </summary>
-            </div>
-        `;
+        messageContainer.appendChild( msgStructure( data.name, (data.message != undefined) ? data.message : null , (data.img != undefined) ? data.img : null, data.hour, data.type, 1 ) );
     } else {
-        messageContainer.innerHTML += `
-            <div class="bg-secondary w-50 mr-auto p-1 rounded text-white mb-1">
-                <summary class="text-left" style="font-size: 0.75rem;"><strong> ${data.name} </strong></summary>
-                ${data.message}
-                <summary class="text-right text" style="font-size: 0.7rem;"> 12:50 P.M </summary>
-            </div>
-        `;
+        messageContainer.appendChild( msgStructure( data.name, (data.message != undefined) ? data.message : null , (data.img != undefined) ? data.img : null, data.hour, data.type, 2 ) );
     }
+    // console.log( data );
     messageContainer.scrollTop = messageContainer.scrollHeight;
 });
 
@@ -136,7 +236,6 @@ socket.on('chat:newMessage', () => {
     document.body.appendChild(sound);
     setTimeout(() => {
         let sound = document.getElementById('sound');
-        console.log(sound);
         document.body.removeChild(sound);
     }, 2000);
 });

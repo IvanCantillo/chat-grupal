@@ -30,7 +30,7 @@
                 </div>
             </div>
         </div>
-        <div id="chat-container" class="row">
+        <div id="chat-container" class="row ">
             <div class="col-12 col-md-8 col-lg-7 col-xl-6 mx-auto mt-3">
                 <div class="card">
                     <div class="card-header">
@@ -47,9 +47,15 @@
                     <div class="card-body" id="message-container">
                         <!-- MENSAJES DINAMICOS -->
                         <!-- VISTA PREVIA DE LA IMAGEN -->
-                        <div class="d-flex align-items-end preview-img-container rounded">
-                            <div id="preview-img" class="w-100 h-100 preview-img rounded shadow-lg d-none">
-                                <button class="btn btn-danger btn-sm rounded-circle btn-close-preview-img"> x </button>
+                        <div class="row d-flex justify-content-end">
+                            <div class="col-4 p-0 preview-img-container rounded">
+                                <div id="preview-img" class="w-100 h-100 preview-img rounded shadow-lg border d-none">
+                                    <input type="hidden" id="img-temp">
+                                    <button id="btn-close-preview-img" class="btn btn-danger btn-sm rounded-circle btn-close-preview-img"> x </button>
+                                    <div class="mt-1 ml-1">
+                                        <span class="text-white border-white bg-info font-weight-bold border rounded p-1 shadow" style="font-size: 0.7rem;"> Vista previa </span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -57,7 +63,7 @@
                         <form id="form-send-message">
                             <div class="form-group">
                                 <div class="input-group mb-2">
-                                    <input type="text" id="message" class="form-control" placeholder="Escribe un mensaje..." />
+                                    <input type="text" id="message" class="form-control" placeholder="Escribe un mensaje..." autocomplete="off" />
                                     <div class="input-group-prepend">
                                         <span class="btn btn-warning text-white btn-file">
                                             <i class="fas fa-paperclip"></i> <input id="select-img" type="file">
