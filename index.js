@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const app = express();
+const imageToBase64 = require('image-to-base64');
 
 // Settings
 app.set('port', process.env.PORT || 3000);
@@ -35,7 +36,20 @@ io.on('connection', (socket) => {
 
     socket.on('chat:message', (data) => {
         console.log(data);
-        io.sockets.emit('chat:message', data);
+        if (data.type == 'img') {
+            let img = '';
+            imageToBase64(`${data.message}`)
+                .then((response) => { img = response; })
+                .catch((error) => { console.log(error); });
+            io.sockets.emit('chat:message', {
+                name: data.name,
+                message: img,
+                id: data.id,
+                type: data.type
+            });
+        } else {
+            io.sockets.emit('chat:message', data);
+        }
         socket.broadcast.emit('chat:newMessage');
     });
 

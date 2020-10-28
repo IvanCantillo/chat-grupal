@@ -1,3 +1,11 @@
+// Funtions 
+function imgToBase64(input, preview) {
+    let fReader = new FileReader();
+    fReader.readAsDataURL(input.files[0]);
+    fReader.onloadend = function(event) {
+        preview.style.backgroundImage = `url('${ event.target.result }')`;
+    }
+}
 const socket = io();
 
 let connect = false;
@@ -16,6 +24,8 @@ let actions = document.getElementById('actions');
 
 let messageContainer = document.getElementById('message-container');
 const message = document.getElementById('message');
+let previewImg = document.getElementById('preview-img');
+const selectInput = document.getElementById('select-img');
 const FormSendMessage = document.getElementById('form-send-message');
 
 // Methods
@@ -43,6 +53,7 @@ exit.onclick = () => {
     userDataContainer.classList.remove('d-none');
     chatContainer.classList.add('d-none');
 }
+
 message.onkeyup = () => {
     clearTimeout(timeout);
     socket.emit('chat:typing', {
@@ -53,16 +64,35 @@ message.onkeyup = () => {
         clearTimeout(timeout);
     }, 500);
 }
+selectInput.onchange = () => {
+    let validation = fileValidation(selectInput.value);
+    if (validation.code == 'ok') {
+        previewImg.classList.remove('d-none');
+        imgToBase64(selectInput, previewImg)
+    } else {
+        console.log(validation.message);
+    }
+}
 FormSendMessage.onsubmit = (e) => {
     e.preventDefault();
     if (!message.value.trim()) {
         return
     }
-    socket.emit('chat:message', {
-        name: name.value.trim(),
-        message: message.value.trim(),
-        id: socket.id
-    });
+    if (!selectInput.value.trim()) {
+        socket.emit('chat:message', {
+            name: name.value.trim(),
+            message: message.value.trim(),
+            id: socket.id,
+            type: 'msg'
+        });
+    } else {
+        socket.emit('chat:message', {
+            name: name.value.trim(),
+            message: message.value.trim(),
+            id: socket.id,
+            type: 'img'
+        });
+    }
     message.value = '';
 }
 
