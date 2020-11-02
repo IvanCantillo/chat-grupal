@@ -9,21 +9,44 @@ function imgToBase64(input, preview, temp) {
 }
 const convertHours = (hour, minutes) => {
   const hours = [
-    0,1,2,3,4,5,6,7,8,9,10,11,12,
-    1,2,3,4,5,6,7,8,9,10,11,12
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
   ];
   let newHour = "";
 
   if (hour >= 12 && minutes > 0) {
-    if( minutes < 10 ){
+    if (minutes < 10) {
       newHour = `${hours[hour]}:0${minutes} P.M`;
-    }else {
+    } else {
       newHour = `${hours[hour]}:${minutes} P.M`;
     }
   } else {
-    if( minutes < 10 ){
+    if (minutes < 10) {
       newHour = `${hours[hour]}:0${minutes} A.M`;
-    }else {
+    } else {
       newHour = `${hours[hour]}:${minutes} A.M`;
     }
   }
@@ -31,82 +54,105 @@ const convertHours = (hour, minutes) => {
 };
 const msgStructure = (name, message = null, img = null, hour, type, person) => {
   let container = document.createElement("div");
+  let personName = document.createElement("summary");
+  let imageContainer = document.createElement("div");
+  let image = document.createElement('img');
+  let text = document.createElement("div"); 
+  let messageTime = document.createElement("summary");
 
   if (type == 1) {
     if (person == 1) {
-      container.setAttribute(
-        "class",
-        "bg-primary w-50 ml-auto p-1 rounded text-white mb-1"
-      );
-      container.innerHTML = `
-                <summary class="text-left" style="font-size: 0.75rem;"><strong> Yo </strong></summary>
-                    ${message}
-                <summary class="text-right text" style="font-size: 0.7rem;"> ${hour} </summary>
-            `;
+      container.setAttribute("class", "bg-primary w-50 ml-auto p-1 rounded text-white mb-1");
+      personName.setAttribute("class", "text-left");
+      personName.style.fontSize = "0.75rem";
+      personName.innerHTML = `<strong> Yo </strong>`;
+      text.innerText = message;
+      messageTime.setAttribute("class", "text-right text");
+      messageTime.style.fontSize = "0.7rem";
+      messageTime.innerText = hour;
+      container.appendChild( personName );
+      container.appendChild( text );
+      container.appendChild( messageTime );
     } else {
-      container.setAttribute(
-        "class",
-        "bg-secondary w-50 mr-auto p-1 rounded text-white mb-1"
-      );
-      container.innerHTML = `
-                <summary class="text-left" style="font-size: 0.75rem;"><strong> ${name} </strong></summary>
-                    ${message}
-                <summary class="text-right text" style="font-size: 0.7rem;"> ${hour} </summary>
-            `;
+      container.setAttribute("class", "bg-secondary w-50 mr-auto p-1 rounded text-white mb-1");
+      personName.setAttribute("class", "text-left");
+      personName.style.fontSize = "0.75rem";
+      personName.innerHTML = `<strong> ${name} </strong>`;
+      text.innerText = message;
+      messageTime.setAttribute("class", "text-right text");
+      messageTime.style.fontSize = "0.7rem";
+      messageTime.innerText = hour;
+      container.appendChild( personName );
+      container.appendChild( text );
+      container.appendChild( messageTime );
     }
   } else if (type == 2) {
     if (person == 1) {
-      container.setAttribute(
-        "class",
-        "bg-primary w-50 ml-auto p-1 rounded text-white mb-1"
-      );
-      container.innerHTML = `
-                <summary class="text-left" style="font-size: 0.75rem;"><strong> Yo </strong></summary>
-                <div class="img-msg-container w-100 p-1">
-                    <img src="${img}" class="img-msg w-100 h-100 border rounded" />
-                </div>
-                <summary class="text-right text" style="font-size: 0.7rem;"> ${hour} </summary>
-            `;
+      container.setAttribute("class", "bg-primary w-50 ml-auto p-1 rounded text-white mb-1");
+      personName.setAttribute("class", "text-left");
+      personName.style.fontSize = "0.75rem";
+      personName.innerHTML = `<strong> Yo </strong>`;
+      imageContainer.setAttribute("class", "img-msg-container w-100 p-1");
+      image.setAttribute("class", "img-msg w-100 h-100 border rounded");
+      image.setAttribute("src", `${img}`);
+      imageContainer.appendChild( image );
+      messageTime.setAttribute("class", "text-right text");
+      messageTime.style.fontSize = "0.7rem";
+      messageTime.innerText = hour;
+      container.appendChild( personName );
+      container.appendChild( imageContainer );
+      container.appendChild( messageTime );
     } else {
-      container.setAttribute(
-        "class",
-        "bg-secondary w-50 mr-auto p-1 rounded text-white mb-1"
-      );
-      container.innerHTML = `
-                <summary class="text-left" style="font-size: 0.75rem;"><strong> ${name} </strong></summary>
-                <div class="img-msg-container w-100 p-1">
-                    <img src="${img}" class="img-msg w-100 h-100 border rounded" />
-                </div>
-                <summary class="text-right text" style="font-size: 0.7rem;"> ${hour} </summary>
-            `;
+      container.setAttribute("class", "bg-secondary w-50 mr-auto p-1 rounded text-white mb-1");
+      personName.setAttribute("class", "text-left");
+      personName.style.fontSize = "0.75rem";
+      personName.innerHTML = `<strong> ${name} </strong>`;
+      imageContainer.setAttribute("class", "img-msg-container w-100 p-1");
+      image.setAttribute("class", "img-msg w-100 h-100 border rounded");
+      image.setAttribute("src", `${img}`);
+      imageContainer.appendChild( image );
+      messageTime.setAttribute("class", "text-right text");
+      messageTime.style.fontSize = "0.7rem";
+      messageTime.innerText = hour;
+      container.appendChild( personName );
+      container.appendChild( imageContainer );
+      container.appendChild( messageTime );
     }
   } else {
     if (person == 1) {
-      container.setAttribute(
-        "class",
-        "bg-primary w-50 ml-auto p-1 rounded text-white mb-1"
-      );
-      container.innerHTML = `
-                <summary class="text-left" style="font-size: 0.75rem;"><strong> Yo </strong></summary>
-                <div class="img-msg-container w-100 p-1">
-                    <img src="${img}" class="img-msg w-100 h-100 border rounded" />
-                </div>
-                ${message}
-                <summary class="text-right text" style="font-size: 0.7rem;"> ${hour} </summary>
-            `;
+      container.setAttribute("class", "bg-primary w-50 ml-auto p-1 rounded text-white mb-1");
+      personName.setAttribute("class", "text-left");
+      personName.style.fontSize = "0.75rem";
+      personName.innerHTML = `<strong> Yo </strong>`;
+      text.innerText = message;
+      imageContainer.setAttribute("class", "img-msg-container w-100 p-1");
+      image.setAttribute("class", "img-msg w-100 h-100 border rounded");
+      image.setAttribute("src", `${img}`);
+      imageContainer.appendChild( image );
+      messageTime.setAttribute("class", "text-right text");
+      messageTime.style.fontSize = "0.7rem";
+      messageTime.innerText = hour;
+      container.appendChild( personName );
+      container.appendChild( imageContainer );
+      container.appendChild( text );
+      container.appendChild( messageTime );
     } else {
-      container.setAttribute(
-        "class",
-        "bg-secondary w-50 mr-auto p-1 rounded text-white mb-1"
-      );
-      container.innerHTML = `
-                <summary class="text-left" style="font-size: 0.75rem;"><strong> ${name} </strong></summary>
-                <div class="img-msg-container w-100 p-1">
-                    <img src="${img}" class="img-msg w-100 h-100 border rounded" />
-                </div>
-                ${message}
-                <summary class="text-right text" style="font-size: 0.7rem;"> ${hour} </summary>
-            `;
+      container.setAttribute("class", "bg-secondary w-50 mr-auto p-1 rounded text-white mb-1");
+      personName.setAttribute("class", "text-left");
+      personName.style.fontSize = "0.75rem";
+      personName.innerHTML = `<strong> ${name} </strong>`;
+      text.innerText = message;
+      imageContainer.setAttribute("class", "img-msg-container w-100 p-1");
+      image.setAttribute("class", "img-msg w-100 h-100 border rounded");
+      image.setAttribute("src", `${img}`);
+      imageContainer.appendChild( image );
+      messageTime.setAttribute("class", "text-right text");
+      messageTime.style.fontSize = "0.7rem";
+      messageTime.innerText = hour;
+      container.appendChild( personName );
+      container.appendChild( imageContainer );
+      container.appendChild( text );
+      container.appendChild( messageTime );
     }
   }
 
@@ -213,11 +259,11 @@ login.onclick = () => {
         },
         (room, user) => {
           if (room) {
-            if( !user ){
+            if (!user) {
               userDataContainer.classList.add("d-none");
               chatContainer.classList.remove("d-none");
               connect = true;
-            }else {
+            } else {
               alertValidations("Ya hay un usuario con ese nombre", roomCode);
             }
           } else {
@@ -269,7 +315,7 @@ FormSendMessage.onsubmit = (e) => {
     console.log("los 2 vacios");
     return;
   } else {
-    let hour = convertHours( date.getHours(), date.getMinutes() );
+    let hour = convertHours(date.getHours(), date.getMinutes());
 
     if (!selectInput.value) {
       socket.emit("chat:message", {
