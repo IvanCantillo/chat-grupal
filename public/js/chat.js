@@ -7,36 +7,27 @@ function imgToBase64(input, preview, temp) {
     temp.value = event.target.result;
   };
 }
-const convertHours = (hour) => {
+const convertHours = (hour, minutes) => {
   const hours = [
-    0,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
+    0,1,2,3,4,5,6,7,8,9,10,11,12,
+    1,2,3,4,5,6,7,8,9,10,11,12
   ];
+  let newHour = "";
 
-  return hours[hour];
+  if (hour >= 12 && minutes > 0) {
+    if( minutes < 10 ){
+      newHour = `${hours[hour]}:0${minutes} P.M`;
+    }else {
+      newHour = `${hours[hour]}:${minutes} P.M`;
+    }
+  } else {
+    if( minutes < 10 ){
+      newHour = `${hours[hour]}:0${minutes} A.M`;
+    }else {
+      newHour = `${hours[hour]}:${minutes} A.M`;
+    }
+  }
+  return newHour;
 };
 const msgStructure = (name, message = null, img = null, hour, type, person) => {
   let container = document.createElement("div");
@@ -220,11 +211,15 @@ login.onclick = () => {
           roomCode: roomCode.value,
           id: socket.id,
         },
-        (exist) => {
-          if (exist) {
-            userDataContainer.classList.add("d-none");
-            chatContainer.classList.remove("d-none");
-            connect = true;
+        (room, user) => {
+          if (room) {
+            if( !user ){
+              userDataContainer.classList.add("d-none");
+              chatContainer.classList.remove("d-none");
+              connect = true;
+            }else {
+              alertValidations("Ya hay un usuario con ese nombre", roomCode);
+            }
           } else {
             alertValidations("El codigo de la sala no existe", roomCode);
           }
@@ -274,12 +269,8 @@ FormSendMessage.onsubmit = (e) => {
     console.log("los 2 vacios");
     return;
   } else {
-    let hour = "";
-    if (date.getHours() >= 12 && date.getMinutes() > 0) {
-      hour = `${convertHours(date.getHours())}:${date.getMinutes()} P.M`;
-    } else {
-      hour = `${convertHours(date.getHours())}:${date.getMinutes()} A.M`;
-    }
+    let hour = convertHours( date.getHours(), date.getMinutes() );
+
     if (!selectInput.value) {
       socket.emit("chat:message", {
         name: name.value.trim(),

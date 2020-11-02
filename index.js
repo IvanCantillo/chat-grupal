@@ -20,6 +20,10 @@ const searchRoom = ( code ) => {
     return arrayIndex.includes( code );
 }
 
+const searchUser = ( room, user ) => {
+    return allRooms[room].users.includes( user );
+}
+
 // WebSocket
 const SoketIO = require('socket.io');
 const io = SoketIO(server);
@@ -31,7 +35,8 @@ io.on('connection', (socket) => {
         console.log( existRoomCode );
         if( !existRoomCode ){
             allRooms[data.roomCode] = {
-                roomName: data.roomName
+                roomName: data.roomName,
+                users: []
             };
             console.log( allRooms );
         }
@@ -40,18 +45,26 @@ io.on('connection', (socket) => {
 
     socket.on('chat:connect', (data, callback) => {
         let existRoomCode = searchRoom( data.roomCode );
-        console.log( existRoomCode );
+        let existUser = searchUser( data.roomCode, data.name );
+    
         if( existRoomCode ){
-            socket.join( data.roomCode );
-            console.log(`New user connect ${ data.name } in room: ${ data.roomCode }`);
-            socket.broadcast.to( data.roomCode ).emit('chat:connect', data);
-            io.to( data.roomCode ).emit('room:newRoom', {
-                roomName: allRooms[data.roomCode].roomName, 
-                roomCode: data.roomCode
-            });
-            callback( true );
+            if( existUser ){
+                callback( true, true );
+            }else{
+                socket.join( data.roomCode );
+                
+                allRooms[data.roomCode].users.push(`${data.name}`);
+                console.log(`New user connect in room: ${ data.roomCode }, users in the room ${ allRooms[data.roomCode].users }`);
+
+                socket.broadcast.to( data.roomCode ).emit('chat:connect', data);
+                io.to( data.roomCode ).emit('room:newRoom', {
+                    roomName: allRooms[data.roomCode].roomName, 
+                    roomCode: data.roomCode
+                });
+                callback( true, false );
+            }
         }else {
-            callback( false );
+            callback( false, false );
         }
     });
 
@@ -91,6 +104,9 @@ io.on('connection', (socket) => {
     });
 
     socket.on('chat:disconnect', (data) => {
+        let index = allRooms[data.roomCode].users.indexOf( `${ data.name }` );
+        allRooms[data.roomCode].users.splice( index, 1 );
+        console.log( allRooms[data.roomCode].users );
         socket.broadcast.to(data.roomCode).emit('chat:disconnect', data);
     })
 });
