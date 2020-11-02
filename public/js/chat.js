@@ -264,7 +264,7 @@ login.onclick = () => {
               chatContainer.classList.remove("d-none");
               connect = true;
             } else {
-              alertValidations("Ya hay un usuario con ese nombre", roomCode);
+              alertValidations("Ya hay un usuario con ese nombre", name);
             }
           } else {
             alertValidations("El codigo de la sala no existe", roomCode);

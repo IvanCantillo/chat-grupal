@@ -45,9 +45,10 @@ io.on('connection', (socket) => {
 
     socket.on('chat:connect', (data, callback) => {
         let existRoomCode = searchRoom( data.roomCode );
-        let existUser = searchUser( data.roomCode, data.name );
+        let existUser = false;
     
         if( existRoomCode ){
+            existUser = searchUser( data.roomCode, data.name );
             if( existUser ){
                 callback( true, true );
             }else{
