@@ -238,6 +238,15 @@ const selectInput = document.getElementById("select-img");
 const FormSendMessage = document.getElementById("form-send-message");
 
 // Methods
+window.onbeforeunload = () => {
+  if( connect ){
+    connect = false;
+    socket.emit("chat:disconnect", {
+      name: name.value,
+      roomCode: roomCode.value,
+    });
+  }
+};
 
 newRoom.onchange = () => {
   let roomNameContainer = document.getElementById("room-name-container");
