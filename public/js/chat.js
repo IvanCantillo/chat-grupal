@@ -204,6 +204,16 @@ const randomCode = (name) => {
   );
   return code;
 };
+const userDisconect = () => {
+  if( connect ){
+    connect = false;
+    socket.emit("chat:disconnect", {
+      name: name.value,
+      roomCode: roomCode.value,
+    });
+    return 'hola';
+  }
+}
 
 // Variables
 const socket = io();
@@ -238,15 +248,7 @@ const selectInput = document.getElementById("select-img");
 const FormSendMessage = document.getElementById("form-send-message");
 
 // Methods
-window.onbeforeunload = () => {
-  if( connect ){
-    connect = false;
-    socket.emit("chat:disconnect", {
-      name: name.value,
-      roomCode: roomCode.value,
-    });
-  }
-};
+window.onbeforeunload = userDisconect;
 
 newRoom.onchange = () => {
   let roomNameContainer = document.getElementById("room-name-container");
@@ -300,11 +302,7 @@ login.onclick = () => {
   }
 };
 exit.onclick = () => {
-  connect = false;
-  socket.emit("chat:disconnect", {
-    name: name.value,
-    roomCode: roomCode.value,
-  });
+  userDisconect
   location.reload();
 };
 
