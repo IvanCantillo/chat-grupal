@@ -158,19 +158,35 @@ const msgStructure = (name, message = null, img = null, hour, type, person) => {
 
   return container;
 };
-const alertValidations = (message, input) => {
-  validations.innerHTML = `
+const alertValidations = (message, input = null, validation = 'login') => {
+  if( validation == 'login' ) {
+    validations.innerHTML = `
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
             <strong>¡Advertencia!</strong> ${message}
         </div>
     `;
 
-  input.value = "";
-  input.focus();
+    input.value = "";
+    input.focus();
 
-  setTimeout(() => {
-    validations.innerHTML = "";
-  }, 2500);
+    setTimeout(() => {
+      validations.innerHTML = "";
+    }, 2500);
+  }else if ( validation == 'img-invalid' ){
+    let container = document.createElement("div");
+    let invalidImgAlert = document.getElementById('invalid-img-alert');
+
+    container.setAttribute("class", "alert alert-warning alert-dismissible fade show img-alert");
+    container.setAttribute("role", "alert");
+    container.innerHTML = message;
+    invalidImgAlert.appendChild( container );
+    previewImg.classList.add("d-none");
+    previewImg.style.backgroundImage = "";
+    selectInput.value = '';
+    setTimeout(() => {
+      invalidImgAlert.removeChild(container);
+    }, 2500);
+  }
 };
 const randomCode = (name) => {
   let code = Math.round(Math.random() * 1000000);
@@ -295,12 +311,13 @@ message.onkeyup = () => {
   }, 500);
 };
 selectInput.onchange = () => {
-  let validation = fileValidation(selectInput.value);
+  let validation = fileValidation(selectInput);
   if (validation.code == "ok") {
     imgToBase64(selectInput, previewImg, imgTemp);
     previewImg.classList.remove("d-none");
   } else {
-    console.log(validation.message);
+    alertValidations( validation.message, null, 'img-invalid' );
+    // console.log( validation.message );
   }
 };
 btnClosePreviewImg.onclick = () => {
@@ -366,7 +383,7 @@ socket.on("chat:connect", (data) => {
 });
 
 socket.on("room:newRoom", (data) => {
-  console.log(data);
+  // console.log(data);
   let code = document.getElementById("code");
   chatName.innerText = data.roomName;
   code.innerText = `Chat: ${data.roomCode}`;
