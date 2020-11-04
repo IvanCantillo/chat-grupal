@@ -176,7 +176,7 @@ const alertValidations = (message, input = null, validation = 'login') => {
     let container = document.createElement("div");
     let invalidImgAlert = document.getElementById('invalid-img-alert');
 
-    container.setAttribute("class", "alert alert-warning alert-dismissible fade show img-alert");
+    container.setAttribute("class", "alert alert-warning alert-dismissible fade show img-alert w-75");
     container.setAttribute("role", "alert");
     container.innerHTML = message;
     invalidImgAlert.appendChild( container );
