@@ -248,7 +248,7 @@ const selectInput = document.getElementById("select-img");
 const FormSendMessage = document.getElementById("form-send-message");
 
 // Methods
-window.onbeforeunload = userDisconect;
+window.onbeforeunload = () => true;
 
 newRoom.onchange = () => {
   let roomNameContainer = document.getElementById("room-name-container");
