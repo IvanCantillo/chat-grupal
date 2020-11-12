@@ -376,6 +376,7 @@ FormSendMessage.onsubmit = (e) => {
         type: 1,
       });
     } else if (!message.value.trim()) {
+      loading(true);
       socket.emit("chat:message", {
         name: name.value.trim(),
         img: imgTemp.value,
@@ -386,6 +387,7 @@ FormSendMessage.onsubmit = (e) => {
       });
       previewImg.classList.add("d-none");
     } else {
+      loading(true);
       socket.emit("chat:message", {
         name: name.value.trim(),
         message: message.value.trim(),
@@ -433,6 +435,7 @@ socket.on("chat:message", (data) => {
         1
       )
     );
+    loading( false );
   } else {
     messageContainer.appendChild(
       msgStructure(
