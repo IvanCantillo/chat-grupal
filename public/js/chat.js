@@ -62,7 +62,7 @@ const msgStructure = (name, message = null, img = null, hour, type, person) => {
 
   if (type == 1) {
     if (person == 1) {
-      container.setAttribute("class", "bg-primary w-50 ml-auto p-1 rounded text-white mb-1");
+      container.setAttribute("class", "bg-primary w-75 ml-auto p-1 rounded text-white mb-1");
       personName.setAttribute("class", "text-left");
       personName.style.fontSize = "0.75rem";
       personName.innerHTML = `<strong> Yo </strong>`;
@@ -74,7 +74,7 @@ const msgStructure = (name, message = null, img = null, hour, type, person) => {
       container.appendChild( text );
       container.appendChild( messageTime );
     } else {
-      container.setAttribute("class", "bg-secondary w-50 mr-auto p-1 rounded text-white mb-1");
+      container.setAttribute("class", "bg-secondary w-75 mr-auto p-1 rounded text-white mb-1");
       personName.setAttribute("class", "text-left");
       personName.style.fontSize = "0.75rem";
       personName.innerHTML = `<strong> ${name} </strong>`;
@@ -88,7 +88,7 @@ const msgStructure = (name, message = null, img = null, hour, type, person) => {
     }
   } else if (type == 2) {
     if (person == 1) {
-      container.setAttribute("class", "bg-primary w-50 ml-auto p-1 rounded text-white mb-1");
+      container.setAttribute("class", "bg-primary w-75 ml-auto p-1 rounded text-white mb-1");
       personName.setAttribute("class", "text-left");
       personName.style.fontSize = "0.75rem";
       personName.innerHTML = `<strong> Yo </strong>`;
@@ -107,7 +107,7 @@ const msgStructure = (name, message = null, img = null, hour, type, person) => {
       container.appendChild( imageContainer );
       container.appendChild( messageTime );
     } else {
-      container.setAttribute("class", "bg-secondary w-50 mr-auto p-1 rounded text-white mb-1");
+      container.setAttribute("class", "bg-secondary w-75 mr-auto p-1 rounded text-white mb-1");
       personName.setAttribute("class", "text-left");
       personName.style.fontSize = "0.75rem";
       personName.innerHTML = `<strong> ${name} </strong>`;
@@ -128,7 +128,7 @@ const msgStructure = (name, message = null, img = null, hour, type, person) => {
     }
   } else {
     if (person == 1) {
-      container.setAttribute("class", "bg-primary w-50 ml-auto p-1 rounded text-white mb-1");
+      container.setAttribute("class", "bg-primary w-75 ml-auto p-1 rounded text-white mb-1");
       personName.setAttribute("class", "text-left");
       personName.style.fontSize = "0.75rem";
       personName.innerHTML = `<strong> Yo </strong>`;
@@ -149,7 +149,7 @@ const msgStructure = (name, message = null, img = null, hour, type, person) => {
       container.appendChild( text );
       container.appendChild( messageTime );
     } else {
-      container.setAttribute("class", "bg-secondary w-50 mr-auto p-1 rounded text-white mb-1");
+      container.setAttribute("class", "bg-secondary w-75 mr-auto p-1 rounded text-white mb-1");
       personName.setAttribute("class", "text-left");
       personName.style.fontSize = "0.75rem";
       personName.innerHTML = `<strong> ${name} </strong>`;
