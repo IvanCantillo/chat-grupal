@@ -12,13 +12,7 @@
     cursor: auto;
 }
 
-#invalid-img-alert-container {
-    position: absolute;
-    height: 20rem;
-}
-
 .img-alert {
-    z-index: 3;
     left: -.3rem;
     opacity: 1;
     animation-name: img-alert-show;
