@@ -12,14 +12,7 @@
     cursor: auto;
 }
 
-#invalid-img-alert-container {
-    position: absolute;
-    height: 18.4rem;
-    width: 32rem;
-}
-
 .img-alert {
-    z-index: 3;
     left: -.3rem;
     width: 18rem;
     opacity: 1;

@@ -95,6 +95,10 @@ const msgStructure = (name, message = null, img = null, hour, type, person) => {
       imageContainer.setAttribute("class", "img-msg-container w-100 p-1");
       image.setAttribute("class", "img-msg w-100 h-100 border rounded");
       image.setAttribute("src", `${img}`);
+      image.setAttribute("onclick", "modalImg( this )");
+      image.setAttribute("data-toggle", "modal");
+      image.setAttribute("data-target", "#show-img-modal");
+      image.style.cursor = 'pointer';
       imageContainer.appendChild( image );
       messageTime.setAttribute("class", "text-right text");
       messageTime.style.fontSize = "0.7rem";
@@ -110,6 +114,10 @@ const msgStructure = (name, message = null, img = null, hour, type, person) => {
       imageContainer.setAttribute("class", "img-msg-container w-100 p-1");
       image.setAttribute("class", "img-msg w-100 h-100 border rounded");
       image.setAttribute("src", `${img}`);
+      image.setAttribute("onclick", "modalImg( this )");
+      image.setAttribute("data-toggle", "modal");
+      image.setAttribute("data-target", "#show-img-modal");
+      image.style.cursor = 'pointer';
       imageContainer.appendChild( image );
       messageTime.setAttribute("class", "text-right text");
       messageTime.style.fontSize = "0.7rem";
@@ -128,6 +136,10 @@ const msgStructure = (name, message = null, img = null, hour, type, person) => {
       imageContainer.setAttribute("class", "img-msg-container w-100 p-1");
       image.setAttribute("class", "img-msg w-100 h-100 border rounded");
       image.setAttribute("src", `${img}`);
+      image.setAttribute("onclick", "modalImg( this )");
+      image.setAttribute("data-toggle", "modal");
+      image.setAttribute("data-target", "#show-img-modal");
+      image.style.cursor = 'pointer';
       imageContainer.appendChild( image );
       messageTime.setAttribute("class", "text-right text");
       messageTime.style.fontSize = "0.7rem";
@@ -145,6 +157,10 @@ const msgStructure = (name, message = null, img = null, hour, type, person) => {
       imageContainer.setAttribute("class", "img-msg-container w-100 p-1");
       image.setAttribute("class", "img-msg w-100 h-100 border rounded");
       image.setAttribute("src", `${img}`);
+      image.setAttribute("onclick", "modalImg( this )");
+      image.setAttribute("data-toggle", "modal");
+      image.setAttribute("data-target", "#show-img-modal");
+      image.style.cursor = 'pointer';
       imageContainer.appendChild( image );
       messageTime.setAttribute("class", "text-right text");
       messageTime.style.fontSize = "0.7rem";
@@ -176,7 +192,7 @@ const alertValidations = (message, input = null, validation = 'login') => {
     let container = document.createElement("div");
     let invalidImgAlert = document.getElementById('invalid-img-alert');
 
-    container.setAttribute("class", "alert alert-warning alert-dismissible fade show img-alert");
+    container.setAttribute("class", "alert alert-warning alert-dismissible fade show img-alert w-75 mx-auto");
     container.setAttribute("role", "alert");
     container.innerHTML = message;
     invalidImgAlert.appendChild( container );
@@ -214,6 +230,10 @@ const userDisconect = () => {
     return 'hola';
   }
 }
+const modalImg = ( item ) => {
+  let showImg = document.getElementById('show-img');
+  showImg.setAttribute("src", item.src);
+}
 
 // Variables
 const socket = io();
@@ -222,6 +242,7 @@ let connect = false;
 let timeout;
 let date = new Date();
 let notify = document.getElementById("notify");
+let modalMessageImg = document.getElementById("modal-message-img");
 
 let name = document.getElementById("name");
 const roomName = document.getElementById("room-name");
@@ -248,7 +269,11 @@ const selectInput = document.getElementById("select-img");
 const FormSendMessage = document.getElementById("form-send-message");
 
 // Methods
-window.onbeforeunload = () => true;
+window.onbeforeunload = () => {
+  if(connect){
+    return true;
+  }
+};
 
 newRoom.onchange = () => {
   let roomNameContainer = document.getElementById("room-name-container");
