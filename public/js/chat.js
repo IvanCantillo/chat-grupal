@@ -271,6 +271,7 @@ const FormSendMessage = document.getElementById("form-send-message");
 // Methods
 window.onbeforeunload = () => {
   if(connect){
+    userDisconect();
     return true;
   }
 };
@@ -327,7 +328,7 @@ login.onclick = () => {
   }
 };
 exit.onclick = () => {
-  userDisconect
+  userDisconect();
   location.reload();
 };
 
