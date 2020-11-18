@@ -226,6 +226,7 @@ const userDisconect = () => {
     socket.emit("chat:disconnect", {
       name: name.value,
       roomCode: roomCode.value,
+      id: socket.id
     });
     return 'hola';
   }
@@ -267,6 +268,9 @@ const btnClosePreviewImg = document.getElementById("btn-close-preview-img");
 const selectInput = document.getElementById("select-img");
 
 const FormSendMessage = document.getElementById("form-send-message");
+
+const showUserList = document.getElementById("show-user-list");
+const userList = document.getElementById("user-list");
 
 // Methods
 window.onbeforeunload = () => {
@@ -406,6 +410,16 @@ FormSendMessage.onsubmit = (e) => {
   }
 };
 
+showUserList.onclick = () => {
+  showUserList.classList.toggle("show");
+  let existe = showUserList.classList.contains("show");
+  if( existe ){
+    showUserList.innerHTML = "<i class='fas fa-users'></i> Ocultar usuarios";
+  }else {
+    showUserList.innerHTML = "<i class='fas fa-users'></i> Ver usuarios";
+  }
+}
+
 // Listening
 socket.on("chat:connect", (data) => {
   if (connect) {
@@ -471,6 +485,18 @@ socket.on("chat:typing", (data) => {
 
 socket.on("chat:stopTyping", (data) => {
   actions.innerHTML = ``;
+});
+
+socket.on("chat:userList", (data) => {
+  let html = '';
+  data.forEach(element => {
+    if( element === name.value ){
+      html += `<li class="list-group-item"> <i class="fas fa-circle text-success" style="font-size: .5rem"></i> <span>${element}</span> (Tú)</li>`;
+    }else {
+      html += `<li class="list-group-item"> <i class="fas fa-circle text-success" style="font-size: .5rem"></i> <span>${element}</span> </li>`;
+    }
+  });
+  userList.innerHTML = html;
 });
 
 socket.on("chat:disconnect", (data) => {

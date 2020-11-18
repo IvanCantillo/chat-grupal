@@ -16,6 +16,7 @@
 
 <body>
     <div class="container">
+        <!-- LOGIN -->
         <div id="user-data-container" class="row">
             <div class="col-12 col-md-8 col-lg-7 col-xl-6 mx-auto">
                 <div class="card">
@@ -47,6 +48,7 @@
                 </div>
             </div>
         </div>
+        <!-- CHAT -->
         <div id="chat-container" class="row d-none">
             <div class="col-12 col-md-8 col-lg-7 col-xl-6 mx-auto">
                 <div class="card">
@@ -67,9 +69,10 @@
                     <!-- ERROR IMAGEN -->
                     <div class="row">
                         <div class="col-9 col-md-10 col-lg-10 col-xl-10 mx-auto d-flex justify-content-center">
-                            <div id="invalid-img-alert-container" class="d-flex align-items-end justify-content-center w-100">
+                            <div id="invalid-img-alert-container"
+                                class="d-flex align-items-end justify-content-center w-100">
                                 <div id="invalid-img-alert" class="d-flex justify-content-center">
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -111,11 +114,35 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col d-flex justify-content-center">
+                                    <button type="button" class="btn btn-outline-info" id="show-user-list"
+                                        data-toggle="collapse" data-target="#user-list-container"
+                                        aria-controls="navbarSupportedContent" aria-expanded="false"
+                                        aria-label="Toggle navigation">
+                                        <i class="fas fa-users"></i> Ver usuarios
+                                    </button>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- LISTA DE USUARIOS -->
+        <div class="row collapse" id="user-list-container">
+            <div class="col-12 col-md-8 col-lg-7 col-xl-6 mx-auto mt-3">
+                <div class="card">
+                    <h5 class="card-header">Lista de usuarios activos</h5>
+                    <div class="card-body">
+                        <ul class="list-group" id="user-list">
+                            <!-- LISTA DINAMICA -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ALERTAS ERROR IMAGEN -->
         <div id="alerts" class="row p-5">
             <div id="invalid-img-alert" class="col-12 col-md-8 col-lg-7 col-xl-6 mx-auto fixed-top my-5">
             </div>
