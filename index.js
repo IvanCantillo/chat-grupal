@@ -62,6 +62,7 @@ io.on('connection', (socket) => {
                     roomName: allRooms[data.roomCode].roomName, 
                     roomCode: data.roomCode
                 });
+                io.to( data.roomCode ).emit('chat:userList', allRooms[data.roomCode].users);
                 callback( true, false );
             }
         }else {
@@ -109,5 +110,6 @@ io.on('connection', (socket) => {
         allRooms[data.roomCode].users.splice( index, 1 );
         console.log( allRooms[data.roomCode].users );
         socket.broadcast.to(data.roomCode).emit('chat:disconnect', data);
+        io.to( data.roomCode ).emit('chat:userList', allRooms[data.roomCode].users);
     })
 });

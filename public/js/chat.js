@@ -488,7 +488,15 @@ socket.on("chat:stopTyping", (data) => {
 });
 
 socket.on("chat:userList", (data) => {
-  console.log( data )
+  let html = '';
+  data.forEach(element => {
+    if( element === name.value ){
+      html += `<li class="list-group-item"> <i class="fas fa-circle text-success" style="font-size: .5rem"></i> <span>${element}</span> (Tú)</li>`;
+    }else {
+      html += `<li class="list-group-item"> <i class="fas fa-circle text-success" style="font-size: .5rem"></i> <span>${element}</span> </li>`;
+    }
+  });
+  userList.innerHTML = html;
 });
 
 socket.on("chat:disconnect", (data) => {
