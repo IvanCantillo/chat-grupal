@@ -111,9 +111,28 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col d-flex justify-content-center">
+                                    <button type="button" class="btn btn-outline-info" id="show-user-list" data-toggle="collapse" data-target="#user-list-container" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> 
+                                        <i class="fas fa-users"></i> Ver usuarios 
+                                    </button>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="row collapse" id="user-list-container">
+            <div class="col-12 col-md-8 col-lg-7 col-xl-6 mx-auto mt-3">
+                <div class="card">
+                    <h5 class="card-header">Lista de usuarios activos</h5>
+                    <div class="card-body">
+                        <ul class="list-group" id="user-list">
+                            <li class="list-group-item"> <i class="fas fa-circle text-success" style="font-size: .5rem"></i> <span>Cras justo odio</span></li>
+                          </ul>
+                    </div>
+                  </div>
             </div>
         </div>
         <div id="alerts" class="row p-5">
