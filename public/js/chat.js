@@ -275,7 +275,6 @@ const userList = document.getElementById("user-list");
 // Methods
 window.onbeforeunload = () => {
   if(connect){
-    userDisconect();
     return true;
   }
 };
@@ -332,8 +331,10 @@ login.onclick = () => {
   }
 };
 exit.onclick = () => {
-  userDisconect();
-  location.reload();
+  if(connect){
+    userDisconect();
+    location.reload();
+  }
 };
 
 message.onkeyup = () => {
